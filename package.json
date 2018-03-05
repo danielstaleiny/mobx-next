@@ -2,11 +2,11 @@
   "name": "mobx-next",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "next",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "node_ENV=production node server.js"
   },
   "repository": {
     "type": "git",
