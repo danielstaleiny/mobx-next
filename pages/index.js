@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Provider } from 'mobx-react'
 import initStore from '~/store'
 
@@ -17,7 +17,7 @@ function initializePage(UI) {
         render() {
             return (
                 <Provider store={this.store} store2={this.store2}>
-                    <div>
+                    <Fragment>
                         <style jsx global>{`
                             body {
                                 margin: 0;
@@ -25,7 +25,7 @@ function initializePage(UI) {
                             }
                         `}</style>
                         <UI />
-                    </div>
+                    </Fragment>
                 </Provider>
             )
         }
