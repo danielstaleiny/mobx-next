@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { Provider } from 'mobx-react'
 import initStore from '~/store'
 
@@ -10,14 +10,13 @@ function initializePage(UI) {
             return { helloMessage: store.helloMessage, isServer }
         }
 
-        constructor(props) {
-            super(props)
-            this.store = initStore(props.isServer, props.helloMessage)
-        }
+        store = initStore(this.props.isServer, this.props.helloMessage)
+
+        store2 = initStore(this.props.isServer, this.props.helloMessage)
 
         render() {
             return (
-                <Provider store={this.store}>
+                <Provider store={this.store} store2={this.store2}>
                     <div>
                         <style jsx global>{`
                             body {
@@ -36,6 +35,7 @@ function initializePage(UI) {
 import { observer, inject } from 'mobx-react'
 
 @inject('store')
+@inject('store2')
 @observer
 class Content extends Component {
     componentDidMount() {
