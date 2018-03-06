@@ -1,8 +1,9 @@
 # mobx-next
 
 
-# Generic styles
+## Generic styles
 ```
+    .main -> make sure main is min 100vh and put container in with flex 1 to stretch height
     .container -> max 1200px and and puts it to middle
     .row -> flex box
     .column -> flex item
@@ -20,4 +21,15 @@
     .transparent -> background color transparent
     .over-hidden -> overflow hidden
     .capitalize  -> capitalize text
-```
+    .mg-auto -> margin left right
+    .mg-auto-left -> margin left 
+    .mg-auto-right -> margin right
+    .wrap -> flex-wrap 
+    .no-wrap -> flex-wrap no-wrap (default)
+    .flex-column -> flex-direction column
+    .flex-row -> flex-direction row 
+    .space-around -> justify content 
+    .space-between -> justify content
+    .flex1 -> grow, shrink, basis to 0px
+    .flex0 -> don't shrink, don't grow, automatically take space
+``` 
