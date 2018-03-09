@@ -27,10 +27,13 @@ class Store {
 
     setSessionStorage = () => {
         if (this.profile && this.token && typeof window !== 'undefined')
-            window.sessionStorage.setItem('session', {
-                token: this.token,
-                profile: this.profile
-            })
+            window.sessionStorage.setItem(
+                'session',
+                JSON.stringify({
+                    token: this.token,
+                    profile: this.profile
+                })
+            )
     }
 
     @action
@@ -60,7 +63,7 @@ class Store {
     @action
     logout = () => {
         this.token = undefined
-        this.profile = undefined
+        this.profile = {}
         if (typeof window !== 'undefined') {
             window.sessionStorage.removeItem('session')
             const Cookie = require('js-cookie')
