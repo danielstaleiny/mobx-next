@@ -4,7 +4,7 @@ import init from '~/utils/initialize-page'
 
 import Content from '~/components/content'
 
-@inject('store')
+@inject('session')
 @observer
 class Page extends Component {
     render() {
