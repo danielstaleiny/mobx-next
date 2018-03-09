@@ -43,13 +43,10 @@ import { observer, inject } from 'mobx-react'
 @inject('store2')
 @observer
 class Page extends Component {
-    componentDidMount() {
-        this.props.store.helloMessage = 'hello from other side'
-    }
-
     render() {
         return (
             <main className="friendlyHello">
+                {this.props.store.helloMessage}
                 <Content />
             </main>
         )
