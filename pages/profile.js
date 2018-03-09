@@ -1,30 +1,42 @@
 import React, { Component, Fragment } from 'react'
 import { Provider } from 'mobx-react'
-import initStore from '~/store'
+import initStoreSession from '~/store/session'
 
 import Content from '~/components/content'
 
 import globalStyles from '~/components/global-styles'
+// dev setup
+// import DevTools from 'mobx-react-devtools'
+// <DevTools />
 
 function initializePage(UI) {
     return class PageComponent extends Component {
-        static getInitialProps(ctx) {
+        static async getInitialProps(ctx) {
             const { req } = ctx
             const isServer = !!req
-            const store = initStore({ isServer })
-            return { helloMessage: store.helloMessage, isServer }
+            let store = {}
+            if (isServer) {
+                store = initStoreSession({
+                    isServer,
+                    token: req.cookies.token
+                })
+                await store.getProfile()
+            } else {
+                store = initStoreSession({ isServer })
+                store.getSessionStorage()
+            }
+            return { ...store, isServer }
         }
 
-        store = initStore({
-            isServer: this.props.isServer,
-            message: this.props.helloMessage
-        })
+        store = initStoreSession(this.props)
 
-        store2 = initStore({ ...this.props, message: this.props.helloMessage })
+        componentDidMount() {
+            this.store.setSessionStorage()
+        }
 
         render() {
             return (
-                <Provider store={this.store} store2={this.store2}>
+                <Provider store={this.store}>
                     <Fragment>
                         <style jsx global>
                             {globalStyles}
@@ -39,17 +51,12 @@ function initializePage(UI) {
 
 import { observer, inject } from 'mobx-react'
 
+// <Content />
 @inject('store')
-@inject('store2')
 @observer
 class Page extends Component {
     render() {
-        return (
-            <main className="friendlyHello">
-                {this.props.store.helloMessage}
-                <Content />
-            </main>
-        )
+        return <main className="friendlyHello">{this.props.store.token}</main>
     }
 }
 

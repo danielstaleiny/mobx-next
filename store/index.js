@@ -1,4 +1,5 @@
-import { action, computed, observable } from 'mobx'
+import { action, computed, observable, useStrict } from 'mobx'
+useStrict(true)
 
 let store = null
 

@@ -40,6 +40,10 @@ app.prepare().then(() => {
 
     server.use(helmet())
     server.use(logger())
+    server.use(async (ctx, next) => {
+        ctx.req.cookies = { token: ctx.cookies.get('token') }
+        await next()
+    })
 
     router.get('/subscribe', actualPage('/subscribe'))
     router.get('/admin', actualPage('/admin'))
