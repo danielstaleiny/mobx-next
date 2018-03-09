@@ -9,7 +9,7 @@ import { Provider } from 'mobx-react'
 // import DevTools from 'mobx-react-devtools'
 // <DevTools />
 
-export const initWithData = (
+const initiliaze = (
     { restricted = false, adminOnly = false } = {}
 ) => getData => Page => {
     return class PageComponent extends Component {
@@ -68,26 +68,27 @@ export const initWithData = (
     }
 }
 
-export const restricted = initWithData({ restricted: true })(ctx => {
+export const restricted = initiliaze({ restricted: true })(ctx => {
     return {}
 })
 
-export const restrictedWithData = initWithData({ restricted: true })
+export const restrictedWithData = initiliaze({ restricted: true })
 
-export const adminOnly = initWithData({
+export const adminOnly = initiliaze({
     restricted: true,
     adminOnly: true
 })(ctx => {
     return {}
 })
 
-export const adminOnlyWithData = initWithData({
+export const adminOnlyWithData = initiliaze({
     restricted: true,
     adminOnly: true
 })
 
-const init = initWithData()(ctx => {
+const init = initiliaze()(ctx => {
     return {}
 })
 
+export const initWithData = initiliaze()
 export default init
