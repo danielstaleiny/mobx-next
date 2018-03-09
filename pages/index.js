@@ -6,13 +6,12 @@ function initializePage(UI) {
     return class PageComponent extends Component {
         static getInitialProps({ req }) {
             const isServer = !!req
-            const store = initStore(isServer)
-            return { helloMessage: store.helloMessage, isServer }
+            const store = initStore({ isServer: isServer })
+            return { message: store.helloMessage, isServer }
         }
 
-        store = initStore(this.props.isServer, this.props.helloMessage)
-
-        store2 = initStore(this.props.isServer, this.props.helloMessage)
+        store = initStore(this.props)
+        store2 = initStore(this.props)
 
         render() {
             return (

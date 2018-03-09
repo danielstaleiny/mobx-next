@@ -48,7 +48,6 @@ app.prepare().then(() => {
     router.get('/welcome', actualPage('/welcome'))
     router.get('/brands', actualPage('/brands'))
     router.get('/about', actualPage('/about'))
-
     router.get('/contact', injectParams({ view: 'contact' })('/support'))
     router.get('/careers', injectParams({ view: 'careers' })('/support'))
     router.get('/guidelines', injectParams({ view: 'guidelines' })('/support'))

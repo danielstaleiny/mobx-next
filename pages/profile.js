@@ -2,30 +2,33 @@ import React, { Component, Fragment } from 'react'
 import { Provider } from 'mobx-react'
 import initStore from '~/store'
 
+import Content from '~/components/content'
+
+import globalStyles from '~/components/global-styles'
+
 function initializePage(UI) {
     return class PageComponent extends Component {
         static getInitialProps(ctx) {
-            console.log(ctx.query)
             const { req } = ctx
             const isServer = !!req
-            const store = initStore(isServer)
+            const store = initStore({ isServer })
             return { helloMessage: store.helloMessage, isServer }
         }
 
-        store = initStore(this.props.isServer, this.props.helloMessage)
+        store = initStore({
+            isServer: this.props.isServer,
+            message: this.props.helloMessage
+        })
 
-        store2 = initStore(this.props.isServer, this.props.helloMessage)
+        store2 = initStore({ ...this.props, message: this.props.helloMessage })
 
         render() {
             return (
                 <Provider store={this.store} store2={this.store2}>
                     <Fragment>
-                        <style jsx global>{`
-                            body {
-                                margin: 0;
-                                padding: 0;
-                            }
-                        `}</style>
+                        <style jsx global>
+                            {globalStyles}
+                        </style>
                         <UI />
                     </Fragment>
                 </Provider>
@@ -39,24 +42,18 @@ import { observer, inject } from 'mobx-react'
 @inject('store')
 @inject('store2')
 @observer
-class Content extends Component {
+class Page extends Component {
     componentDidMount() {
         this.props.store.helloMessage = 'hello from other side'
     }
 
     render() {
         return (
-            <div className="friendlyHello">
-                <style jsx>{`
-                    .friendlyHello {
-                        color: blue;
-                    }
-                `}</style>
-                {this.props.store.helloMessage}
-                {console.log(this.props)}
-            </div>
+            <main className="friendlyHello">
+                <Content />
+            </main>
         )
     }
 }
 
-export default initializePage(Content)
+export default initializePage(Page)

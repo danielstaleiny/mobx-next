@@ -13,7 +13,7 @@ const messages = [
 class Store {
     @observable helloMessage = ''
 
-    constructor(isServer, message) {
+    constructor({ isServer, message } = {}) {
         this.helloMessage = message
             ? message
             : messages[Math.floor(Math.random() * (messages.length - 1))]
@@ -30,13 +30,9 @@ class Store {
     stop = () => clearInterval(this.timer)
 }
 
-export default function initStore(isServer, message) {
-    if (isServer && typeof window === 'undefined') {
-        return new Store(isServer, message)
-    } else {
-        if (store === null) {
-            store = new Store(isServer, message)
-        }
-        return store
-    }
-}
+// on server return new Store
+// on browser return store instance
+export default (obj = {}) =>
+    !!(obj.isServer && typeof window === 'undefined')
+        ? new Store(obj)
+        : store === null ? (store = new Store(obj)) : store
