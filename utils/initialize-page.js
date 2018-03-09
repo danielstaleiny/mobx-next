@@ -9,15 +9,40 @@ import { Provider } from 'mobx-react'
 // import DevTools from 'mobx-react-devtools'
 // <DevTools />
 
-export default function initializePage(Page) {
+export const initWithData = (
+    { restricted = false, adminOnly = false } = {}
+) => getData => Page => {
     return class PageComponent extends Component {
         static async getInitialProps(ctx) {
             const { req } = ctx
             const isServer = !!req
             const session = await injectSession(ctx)
+
+            if (restricted && !session.isAuthed) {
+                if (isServer) {
+                    ctx.res.writeHead(307, { Location: '/signin' })
+                    ctx.res.end()
+                } else {
+                    const Router = require('next/router')
+                    Router.push('/signin')
+                }
+            }
+
+            if (adminOnly && !session.profile.admin) {
+                if (isServer) {
+                    ctx.res.writeHead(307, { Location: '/' })
+                    ctx.res.end()
+                } else {
+                    const Router = require('next/router')
+                    Router.push('/')
+                }
+            }
+
             const mixpanel = initMixpanel()
             if (!isServer) mixpanel.init()
-            return { ...session, ...mixpanel, isServer }
+            const data = await getData(ctx)
+
+            return { ...data, ...session, ...mixpanel, isServer }
         }
 
         session = initStoreSession(this.props)
@@ -42,3 +67,27 @@ export default function initializePage(Page) {
         }
     }
 }
+
+export const restricted = initWithData({ restricted: true })(ctx => {
+    return {}
+})
+
+export const restrictedWithData = initWithData({ restricted: true })
+
+export const adminOnly = initWithData({
+    restricted: true,
+    adminOnly: true
+})(ctx => {
+    return {}
+})
+
+export const adminOnlyWithData = initWithData({
+    restricted: true,
+    adminOnly: true
+})
+
+const init = initWithData()(ctx => {
+    return {}
+})
+
+export default init

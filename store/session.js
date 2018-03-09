@@ -13,7 +13,7 @@ class Store {
     }
 
     @computed
-    get isLogin() {
+    get isAuthed() {
         return !!this.token
     }
 
