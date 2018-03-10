@@ -11,10 +11,10 @@ class Store {
         this.mixLoaded = mixLoaded
     }
 
-    track = (event, obj) => {
+    track = (event, json) => {
         if (this.mixLoaded && typeof window !== 'undefined') {
             if (process.env.NODE_ENV !== 'development') {
-                Mixpanel.track(event, obj)
+                Mixpanel.track(event, json)
             }
         }
     }

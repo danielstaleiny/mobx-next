@@ -39,7 +39,7 @@ const initiliaze = (
             }
 
             const mixpanel = initMixpanel()
-            if (!isServer) mixpanel.init()
+            // if (!isServer) mixpanel.init()
             const data = await getData(ctx)
 
             return { ...data, ...session, ...mixpanel, isServer }
