@@ -9,11 +9,13 @@ export default ({ event = 'page', json } = {}) => Page => {
                     if (this.props.mixpanel.loaded)
                         this.props.mixpanel.track(event, json)
                 }
-                // parse props is not needed because
-                // we don't have any state beside mobx
-                // return <Page {...this.props} />
                 render() {
-                    return <Page />
+                    return (
+                        <Page
+                            data={this.props.data}
+                            isServer={this.props.isServer}
+                        />
+                    )
                 }
             }
         )

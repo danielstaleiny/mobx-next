@@ -42,11 +42,16 @@ const initiliaze = (
             // if (!isServer) mixpanel.init()
             const data = await getData(ctx)
 
-            return { ...data, ...session, ...mixpanel, isServer }
+            return {
+                data: { ...data },
+                session: { ...session },
+                mixpanel: { ...mixpanel },
+                isServer
+            }
         }
 
-        session = initStoreSession(this.props)
-        mixpanel = initMixpanel(this.props)
+        session = initStoreSession(this.props.session)
+        mixpanel = initMixpanel(this.props.mixpanel)
 
         componentDidMount() {
             this.session.setSessionStorage()
@@ -60,7 +65,10 @@ const initiliaze = (
                         <style jsx global>
                             {globalStyles}
                         </style>
-                        <Page />
+                        <Page
+                            data={this.props.data}
+                            isServer={this.props.isServer}
+                        />
                     </Fragment>
                 </Provider>
             )
